@@ -2,9 +2,13 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
 const router = express.Router();
+
+// Connect on Mongo
+mongoose.connect('mongodb://localhost:27017/ndstr', {useNewUrlParser: true});
 
 // Carrega as rotas
 const indexRoute = require('./routes/index-route');
@@ -15,6 +19,5 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', indexRoute);
 app.use('/products', productRoute);
-
 
 module.exports = app;
