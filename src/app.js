@@ -17,6 +17,7 @@ const Product = require('./models/product');
 const indexRoute = require('./routes/index-route');
 const productRoute = require('./routes/product-route')
 
+// Para usar o body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
