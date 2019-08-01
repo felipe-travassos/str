@@ -3,10 +3,43 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 
-<<<<<<< HEAD
 exports.get = (req, res, next) => {
     Product
-        .find({ active: true }, 'title price slug')
+        .find({ active: true }, 'title price slug tags')
+        .then(data => {
+            res.status(201).send(data);
+        }).catch(e => {
+            res.status(400).send(e);
+        });
+}
+
+exports.getBySlug = (req, res, next) => {
+    Product
+        .findOne({ 
+            slug: req.params.slug,
+            active: true }, 'title description price slug tags')
+        .then(data => {
+            res.status(201).send(data);
+        }).catch(e => {
+            res.status(400).send(e);
+        });
+}
+
+exports.getByTag = (req, res, next) => {
+    Product
+        .find({ 
+            tags: req.params.tag,
+            active: true }, 'title description price slug tags')
+        .then(data => {
+            res.status(200).send(data);
+        }).catch(e => {
+            res.status(400).send(e);
+        });
+}
+
+exports.getById = (req, res, next) => {
+    Product
+        .findById(req.params.id)
         .then(data => {
             res.status(201).send(data);
         }).catch(e => {
@@ -17,11 +50,6 @@ exports.get = (req, res, next) => {
 exports.post = (req, res, next) => {
     var product = new Product(req.body);
     Product
-=======
-exports.post = (req, res, next) => {
-    var product = new Product(req.body);
-    product
->>>>>>> 25ac6cde0bec30c796b76afb2a8efe49a21e66a3
         .save()
         .then(x => {
             res.status(201).send({
