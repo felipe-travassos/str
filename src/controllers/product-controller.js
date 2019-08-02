@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 
+// Metodo para GET básico - SELECT
 exports.get = (req, res, next) => {
     Product
         .find({ active: true }, 'title price slug tags')
@@ -13,6 +14,7 @@ exports.get = (req, res, next) => {
         });
 }
 
+// Metodo para buscar por SLUG - SELECT
 exports.getBySlug = (req, res, next) => {
     Product
         .findOne({
@@ -25,7 +27,7 @@ exports.getBySlug = (req, res, next) => {
             res.status(400).send(e);
         });
 }
-
+ // Metodo para buscar  por TAG
 exports.getByTag = (req, res, next) => {
     Product
         .find({
@@ -39,6 +41,7 @@ exports.getByTag = (req, res, next) => {
         });
 }
 
+// Metodo para buscar por ID
 exports.getById = (req, res, next) => {
     Product
         .findById(req.params.id)
@@ -49,9 +52,10 @@ exports.getById = (req, res, next) => {
         });
 }
 
+// Metodo para adicionar um registro - INSERT
 exports.post = (req, res, next) => {
     var product = new Product(req.body);
-    Product
+    product
         .save()
         .then(x => {
             res.status(201).send({
@@ -64,14 +68,16 @@ exports.post = (req, res, next) => {
             });
         });
 };
+/*
 exports.put = (req, res, next) => {
     const id = req.params.id;
     res.status(201).send({
         id: id,
         item: req.body
     });
-}
+} */
 
+// Metodo para Alterar - UPDATE
 exports.put = (req, res, next) => {
     Product
         .findAndModify(req.params.id, {
@@ -91,6 +97,20 @@ exports.put = (req, res, next) => {
             });
         });
 };
+
+
+// Metodo para deletar do banco Mongo - DELETE
 exports.delete = (req, res, next) => {
-    res.status(200).send(req.body)
+    Product
+        .findByIdAndRemove(req.body.id)
+        .then(x => {
+            res.status(201).send({
+                message: 'Produto removido com sucesso!'
+            });
+        }).catch(e => {
+            res.status(400).send({
+                message: 'Falha ao remover o produto!',
+                data: e
+            });
+        });
 }
