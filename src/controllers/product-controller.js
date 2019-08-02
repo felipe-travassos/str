@@ -102,7 +102,7 @@ exports.put = (req, res, next) => {
 // Metodo para deletar do banco Mongo - DELETE
 exports.delete = (req, res, next) => {
     Product
-        .findByIdAndRemove(req.body.id)
+        .findByIdAndDelete(req.body.id)
         .then(x => {
             res.status(201).send({
                 message: 'Produto removido com sucesso!'
